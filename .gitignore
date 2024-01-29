@@ -70,3 +70,7 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+/Western_Game/UserSettings
+/Western_Game/Logs
+/Western_Game/Packages
+/Western_Game/ProjectSettings
