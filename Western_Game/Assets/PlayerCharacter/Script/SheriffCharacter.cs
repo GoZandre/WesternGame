@@ -28,6 +28,7 @@ public class SheriffCharacter : MonoBehaviour
 
     //Input variables
 
+    private int _chargerAmmo;
     private bool _canShoot;
 
     private void Awake()
@@ -50,8 +51,10 @@ public class SheriffCharacter : MonoBehaviour
     private void Start()
     {
         _playerInputs.Player.Fire.started += Fire;
+        _playerInputs.Player.Reload.started += Fire;
 
         _canShoot = true;
+        _chargerAmmo = maxAmmo;
     }
 
 
@@ -72,7 +75,13 @@ public class SheriffCharacter : MonoBehaviour
 
             StartCoroutine(FireDelay());
         }
-        
+
+    }
+
+
+    public void Reload(InputAction.CallbackContext obj)
+    {
+        _canShoot = false;
     }
 
     private IEnumerator FireDelay()
