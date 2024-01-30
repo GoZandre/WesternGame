@@ -51,7 +51,7 @@ public class SheriffCharacter : MonoBehaviour
     private void Start()
     {
         _playerInputs.Player.Fire.started += Fire;
-        _playerInputs.Player.Reload.started += Fire;
+        _playerInputs.Player.Reload.started += Reload;
 
         _canShoot = true;
         _chargerAmmo = maxAmmo;
@@ -60,10 +60,12 @@ public class SheriffCharacter : MonoBehaviour
 
     public void Fire(InputAction.CallbackContext obj)
     {
-        if (_canShoot)
+        if (_canShoot & _chargerAmmo > 0)
         {
             _gunAnimator.SetTrigger("Fire");
             _canShoot = false;
+
+            _chargerAmmo--;
 
             //Spawn orijectile
 
@@ -73,7 +75,7 @@ public class SheriffCharacter : MonoBehaviour
             //Play effects
             StartCoroutine(_cameraShake.Shake(.2f, .5f));
 
-            StartCoroutine(FireDelay());
+            StartCoroutine(LockShootDelay(fireRate));
         }
 
     }
@@ -81,13 +83,28 @@ public class SheriffCharacter : MonoBehaviour
 
     public void Reload(InputAction.CallbackContext obj)
     {
-        _canShoot = false;
+        if(_chargerAmmo < maxAmmo)
+        {
+            _canShoot = false;
+            _gunAnimator.SetTrigger("Reload");
+
+            _chargerAmmo = maxAmmo;
+
+            StartCoroutine(LockShootDelay(.46f));
+        }
+        
     }
 
-    private IEnumerator FireDelay()
+
+
+    private IEnumerator LockShootDelay(float delay)
     {
+        _canShoot = false;
+
         yield return new WaitForSeconds(fireRate);
+
         _canShoot = true;
     }
+
 
 }
